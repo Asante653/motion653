@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="UTF-8">
+    <title>Telecel </title>
+    <link rel="stylesheet" href="./style.css">
+
+  </head>
+    
+  <body>
+  <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Telecel Appointment Booking Portal</title>
+    <style>
+        :root {
+            --telecel-red: #E60000;
+            --telecel-dark: #111111;
+            --telecel-gray: #f5f5f7;
+            --text-color: #333333;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background-color: var(--telecel-gray);
+            color: var(--text-color);
+            margin: 0;
+            padding: 20px;
+        }
+
+        .booking-container {
+            max-width: 600px;
+            background: #ffffff;
+            margin: 40px auto;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .header h2 {
+            color: var(--telecel-dark);
+            margin-bottom: 5px;
+        }
+
+        .step {
+            display: none;
+        }
+
+        .step.active {
+            display: block;
+        }
+
+        label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: var(--telecel-dark);
+        }
+
+        select, input {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 20px;
+            border: 1px solid #cccccc;
+            border-radius: 6px;
+            box-sizing: border-box;
+            font-size: 16px;
+        }
+
+        .grid-options {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .time-slot {
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-weight: 500;
+        }
+
+        .time-slot:hover {
+            border-color: var(--telecel-red);
+            background: #fff5f5;
+        }
+
+        .time-slot.selected {
+            background-color: var(--telecel-red);
+            color: white;
+            border-color: var(--telecel-red);
+        }
+
+        .btn-group {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+        }
+
+        button {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 6px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .btn-next {
+            background-color: var(--telecel-red);
+            color: white;
+            margin-left: auto;
+        }
+
+        .btn-next:hover {
+            background-color: #cc0000;
+        }
+
+        .btn-prev {
+            background-color: #e0e0e0;
+            color: var(--telecel-dark);
+        }
+
+        .btn-prev:hover {
+            background-color: #d2d2d2;
+        }
+    </style>
+</head>
+<body>
+
+<div class="booking-container">
+    <div class="header">
+        <h2>Telecel Bookings</h2>
+        <p>Skip the queue. Schedule your retail or corporate visit.</p>
+    </div>
+
+    <div class="step active" id="step-1">
+        <label for="service">Select Service</label>
+        <select id="service">
+            <option value="sim_registration">SIM Registration / Swap</option>
+            <option value="broadband">Fixed Broadband Inquiries</option>
+            <option value="telecel_cash">Telecel Cash Support</option>
+            <option value="enterprise">B2B Enterprise Consultation</option>
+        </select>
+
+        <label for="location">Select Branch</label>
+        <select id="location">
+            <option value="accra_mall">Accra Mall Branch</option>
+            <option value="kumasi_mall">Kumasi City Mall Branch</option>
+            <option value="takoradi">Takoradi Main Hub</option>
+        </select>
+        
+        <div class="btn-group">
+            <button class="btn-next" onclick="nextStep(2)">Next Step</button>
+        </div>
+    </div>
+
+    <div class="step" id="step-2">
+        <label for="date">Select Date</label>
+        <input type="date" id="date" min="2026-06-22">
+
+        <label>Available Slots</label>
+        <div class="grid-options" id="time-slots">
+            <div class="time-slot" onclick="selectTime(this, '09:00 AM')">09:00 AM</div>
+            <div class="time-slot" onclick="selectTime(this, '11:00 AM')">11:00 AM</div>
+            <div class="time-slot" onclick="selectTime(this, '02:00 PM')">02:00 PM</div>
+            <div class="time-slot" onclick="selectTime(this, '04:00 PM')">04:00 PM</div>
+        </div>
+
+        <div class="btn-group">
+            <button class="btn-prev" onclick="prevStep(1)">Back</button>
+            <button class="btn-next" onclick="nextStep(3)">Next Step</button>
+        </div>
+    </div>
+
+    <div class="step" id="step-3">
+        <label for="fullname">Full Name</label>
+        <input type="text" id="fullname" placeholder="John Doe">
+
+        <label for="phone">Telecel Number</label>
+        <input type="tel" id="phone" placeholder="020 XXXXXXX">
+
+        <div class="btn-group">
+            <button class="btn-prev" onclick="prevStep(2)">Back</button>
+            <button class="btn-next" style="background-color: #000;" onclick="submitBooking()">Confirm Appointment</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    let bookingData = {
+        service: '',
+        location: '',
+        date: '',
+        time: '',
+        name: '',
+        phone: ''
+    };
+
+    function nextStep(stepNumber) {
+        if(stepNumber === 2) {
+            bookingData.service = document.getElementById('service').value;
+            bookingData.location = document.getElementById('location').value;
+        }
+        if(stepNumber === 3) {
+            bookingData.date = document.getElementById('date').value;
+            if(!bookingData.date || !bookingData.time) {
+                alert('Please pick both a date and a time slot.');
+                return;
+            }
+        }
+        
+        document.querySelectorAll('.step').forEach(step => step.classList.remove('active'));
+        document.getElementById(`step-${stepNumber}`).classList.add('active');
+    }
+
+    function prevStep(stepNumber) {
+        document.querySelectorAll('.step').forEach(step => step.classList.remove('active'));
+        document.getElementById(`step-${stepNumber}`).classList.add('active');
+    }
+
+    function selectTime(element, timeValue) {
+        document.querySelectorAll('.time-slot').forEach(slot => slot.classList.remove('selected'));
+        element.classList.add('selected');
+        bookingData.time = timeValue;
+    }
+
+    function submitBooking() {
+        bookingData.name = document.getElementById('fullname').value;
+        bookingData.phone = document.getElementById('phone').value;
+
+        if(!bookingData.name || !bookingData.phone) {
+            alert('Please enter your details.');
+            return;
+        }
+
+        // Output data payload to pass over to WordPress or an external API
+        console.log('Sending Payload to Server:', bookingData);
+        alert(`Success! Appointment confirmed for ${bookingData.name} at ${bookingData.location} on ${bookingData.date} at ${bookingData.time}.`);
+        
+        // Optional: window.location.href = "/thank-you";
+    }
+</script>
+</body>
+</html>
+    <script  src="./script.js"></script>
+
+  </body>
+  
+</html>

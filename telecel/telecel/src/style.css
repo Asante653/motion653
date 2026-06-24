@@ -1,0 +1,30 @@
+/* Force Telecel Red accent colors on booking buttons and highlights */
+:root {
+    --telecel-red: #E60000;
+    --telecel-dark: #1A1A1A;
+    --telecel-gray: #F4F4F4;
+}
+
+/* Example: Target booking button background */
+.booking-wizard-wrapper .btn-primary,
+.os-wizard-buttons .os-next-btn {
+    background-color: var(--telecel-red) !important;
+    border-color: var(--telecel-red) !important;
+    color: #ffffff !important;
+    font-weight: 600;
+    border-radius: 4px; /* Clean corporate styling */
+}
+
+/* Example: Hover states */
+.booking-wizard-wrapper .btn-primary:hover,
+.os-wizard-buttons .os-next-btn:hover {
+    background-color: var(--telecel-dark) !important;
+    border-color: var(--telecel-dark) !important;
+}
+
+/* Selected time slot highlight */
+.time-slot.selected, 
+.os-time-slot.active {
+    background-color: var(--telecel-red) !important;
+    color: #fff !important;
+}
